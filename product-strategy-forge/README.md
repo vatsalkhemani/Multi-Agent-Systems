@@ -1,122 +1,149 @@
 # Product Strategy Forge
 
-**9 AI agents collaborating to turn a problem statement into a Product Strategy Blueprint.**
+A multi-agent system where 9 specialized AI agents collaborate to turn a problem statement into a comprehensive Product Strategy Blueprint.
 
-This is a truly agentic multi-agent system built with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/). The agents autonomously research, synthesize, critique, and strategize — with the LLM making all routing decisions, not Python code.
+Give it a problem like *"Small businesses struggle to manage social media"* and a team of AI agents will research user pain, analyze trends, map competitors, critique each other's work, build strategy, and compile a professional strategy document.
 
-## Architecture
+Built with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/).
+
+## How It Works
 
 ```
-                    ┌──────────────────┐
-                    │  Discovery Lead   │  ← The Brain
-                    │  (orchestrator)   │     Decides which agents to call
-                    └────────┬─────────┘
-                             │
-              ┌──────────────┼──────────────────┐
-              │  as_tool()   │  as_tool()        │  as_tool()
-              ▼              ▼                   ▼
-    ┌─────────────┐ ┌──────────────┐ ┌───────────────────┐
-    │ User Pain   │ │ Trend Scout  │ │ Competitive Intel  │
-    │ Researcher  │ │              │ │                    │
-    └─────────────┘ └──────────────┘ └───────────────────┘
-              │  as_tool()           │  as_tool()
-              ▼                      ▼
-    ┌──────────────────┐   ┌──────────────────┐
-    │ Strategy Architect│   │ GTM Strategist   │
-    └──────────────────┘   └──────────────────┘
-              │  as_tool()           │  as_tool()
-              ▼                      ▼
-    ┌──────────────────┐   ┌──────────────────┐
-    │   Synthesizer    │   │ Blueprint Compiler│
-    └──────────────────┘   └──────────────────┘
-              │  handoff (bidirectional)
-              ▼
-    ┌──────────────────┐
-    │     Critic        │  ← Decides to approve or send back
-    └──────────────────┘
+                        ┌──────────────────┐
+                        │  Discovery Lead   │  Orchestrator: dispatches agents,
+                        │                  │  coordinates phases, responds to critique
+                        └────────┬─────────┘
+                                 │
+          ┌──────────────────────┼──────────────────────┐
+          ▼                      ▼                      ▼
+ ┌────────────────┐   ┌────────────────┐   ┌────────────────────┐
+ │  User Pain     │   │  Trend Scout   │   │   Competitive      │
+ │  Researcher    │   │                │   │   Intelligence     │
+ └───────┬────────┘   └───────┬────────┘   └─────────┬──────────┘
+         └────────────────────┼──────────────────────┘
+                              ▼
+                  ┌────────────────────────┐
+                  │  Research Synthesizer   │  Cross-references findings,
+                  │                        │  surfaces contradictions
+                  └───────────┬────────────┘
+                              ▼
+                  ┌────────────────────────┐
+                  │        Critic          │◄─── Can send agents back
+                  │                        │     with specific feedback
+                  └───────────┬────────────┘
+                              ▼
+          ┌───────────────────┴───────────────────┐
+          ▼                                       ▼
+ ┌────────────────────┐             ┌────────────────────┐
+ │ Strategy Architect  │            │  GTM Strategist     │
+ └─────────┬──────────┘             └─────────┬──────────┘
+           └──────────────┬───────────────────┘
+                          ▼
+              ┌────────────────────────┐
+              │   Blueprint Compiler   │  Assembles the final
+              │                        │  strategy document
+              └────────────────────────┘
 ```
 
-## What Makes This Truly Agentic
+### The Critique Loop
 
-| Pattern | How It's Used |
-|---------|--------------|
-| **Agent-as-Tool** | Discovery Lead calls 7 specialist agents as tools — deciding which to call and when |
-| **Bidirectional Handoffs** | Discovery Lead ↔ Critic. The Critic evaluates and chooses to approve or send specific agents back |
-| **LLM Routing** | The Discovery Lead agent *thinks* about what to do next. No Python if-statements make routing decisions |
-| **Autonomous Loops** | The critique-redo loop runs autonomously inside a single `Runner.run()` call |
+The Critic agent evaluates research quality and can send specific agents back for revisions. This is what makes the system more than a pipeline.
+
+1. Research agents produce their findings
+2. Synthesizer combines everything
+3. Critic evaluates: Are there gaps? Missing segments? Weak claims?
+4. If gaps exist, the Critic hands off back to the Discovery Lead with specific instructions like *"The Researcher needs to investigate enterprise buyers"*
+5. Discovery Lead re-dispatches only the flagged agents with the critique feedback
+6. The revised work goes back through the Critic
+7. Once approved, the system moves to strategy
+
+This back-and-forth produces stronger output than a single pass.
 
 ## The 9 Agents
 
-| # | Agent | Role |
-|---|-------|------|
-| 1 | **Discovery Lead** | Orchestrator — decides the flow, dispatches agents |
-| 2 | User Pain Researcher | Pain points, user segments, jobs-to-be-done |
-| 3 | Trend Scout | Industry trends, timing, "why now" |
-| 4 | Competitive Intelligence | Competitors, moats, market gaps |
-| 5 | Research Synthesizer | Cross-references all research, surfaces contradictions |
-| 6 | **Critic** | Evaluates work quality, sends agents back for revisions |
-| 7 | Strategy Architect | Product vision, strategic bets, sequencing |
-| 8 | GTM Strategist | Go-to-market plan, positioning, channels |
-| 9 | Blueprint Compiler | Produces the final Product Strategy Blueprint |
+| # | Agent | What It Does |
+|---|-------|-------------|
+| 1 | **Discovery Lead** | Orchestrator. Decides which agents to call, when to request critique, how to respond to feedback |
+| 2 | User Pain Researcher | Identifies user segments, pain points, and jobs-to-be-done |
+| 3 | Trend Scout | Analyzes industry trends, timing windows, and answers "why now?" |
+| 4 | Competitive Intelligence | Maps competitors, assesses moats, identifies market gaps |
+| 5 | Research Synthesizer | Cross-references all research, surfaces contradictions, ranks insights |
+| 6 | **Critic** | Evaluates work quality. Approves or sends specific agents back with targeted feedback |
+| 7 | Strategy Architect | Builds product vision, strategic bets, moat strategy, sequencing |
+| 8 | GTM Strategist | Builds go-to-market: beachhead segment, positioning, channels, pricing, launch phases |
+| 9 | Blueprint Compiler | Compiles all work into a polished Product Strategy Blueprint |
+
+## SDK Patterns Used
+
+| Pattern | Where |
+|---------|-------|
+| **Agent-as-Tool** | Discovery Lead calls 7 specialist agents as tools |
+| **Bidirectional Handoff** | Discovery Lead and Critic transfer control back and forth |
+| **Parallel Tool Calls** | Discovery Lead dispatches 3 research agents at once |
+
+## Output
+
+The final deliverable is a Product Strategy Blueprint with:
+- Executive Summary
+- Research Foundation (user segments, pain points, trends, competitive landscape)
+- Synthesis and Key Insights
+- Strategic Direction (vision, bets, moat, sequencing)
+- Go-to-Market (beachhead, positioning, channels, pricing, launch phases)
+- Risks and Open Questions
+- Agent Deliberation Log (what the Critic pushed back on and what changed)
 
 ## Setup
 
 ```bash
-# Clone
 git clone <repo-url>
 cd Multi-agent-systems/product-strategy-forge
 
-# Virtual environment
 python -m venv venv
 source venv/bin/activate        # macOS/Linux
 venv\Scripts\activate           # Windows
 
-# Install
 pip install -r requirements.txt
 
-# API key
 cp .env.example .env
-# Edit .env and add your OpenAI API key
+# Add your OpenAI API key to .env
 ```
 
 ## Run
 
-**Terminal (no UI):**
+Terminal mode (fully autonomous):
 ```bash
 python forge.py "Your problem statement here"
 ```
 
-**Streamlit UI (with human-in-the-loop):**
+Streamlit UI (with human-in-the-loop at each phase):
 ```bash
 streamlit run app.py
 ```
 
-## How It Works
+## Project Structure
 
-1. You enter a problem statement
-2. **Research Phase**: Discovery Lead dispatches 3 research agents in parallel
-3. **Synthesis**: Research Synthesizer cross-references all findings
-4. **Critique**: Critic evaluates — can send specific agents back for revisions
-5. Human reviews and approves research
-6. **Strategy Phase**: Strategy Architect + GTM Strategist build the plan
-7. **Strategy Critique**: Critic evaluates again
-8. Human reviews and approves
-9. **Blueprint Compiler** produces the final document
-
-The critique loop is the architectural differentiator — the Critic agent autonomously decides whether research is strong enough, and if not, hands off back to the Discovery Lead with specific instructions on what to fix.
-
-## Output
-
-A professional **Product Strategy Blueprint** with:
-- Executive Summary
-- Research Foundation (pain points, trends, competitive landscape)
-- Strategic Direction (vision, bets, moat, sequencing)
-- Go-to-Market (beachhead, positioning, channels, launch plan)
-- Risks & Open Questions
-- Agent Deliberation Log (what the Critic pushed back on and what changed)
+```
+product-strategy-forge/
+├── forge_agents/
+│   ├── lead.py              # Discovery Lead (7 tools + Critic handoff)
+│   ├── researcher.py        # User Pain Researcher
+│   ├── trend_scout.py       # Trend Scout
+│   ├── competitive.py       # Competitive Intelligence
+│   ├── synthesizer.py       # Research Synthesizer
+│   ├── critic.py            # Critic (bidirectional handoff with Discovery Lead)
+│   ├── strategist.py        # Strategy Architect
+│   ├── gtm.py               # GTM Strategist
+│   └── compiler.py          # Blueprint Compiler
+├── forge.py                 # Terminal runner
+├── app.py                   # Streamlit UI
+├── config.py                # Configuration
+├── requirements.txt
+└── .env.example
+```
 
 ## Tech Stack
 
-- **OpenAI Agents SDK** — Agent definitions, tools, handoffs, Runner
-- **Streamlit** — Human-in-the-loop UI
-- **GPT-4o** — Powers all 9 agents
+- [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) for agent framework
+- GPT-4o powering all 9 agents
+- Streamlit for the human-in-the-loop UI
+- Python 3.11+

@@ -11,8 +11,8 @@ import os
 # Ensure the project root is on the path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from agents import Agent, Runner
-from agents.lead import discovery_lead
+from agents import Runner
+from forge_agents.lead import discovery_lead
 from config import MAX_TURNS
 
 

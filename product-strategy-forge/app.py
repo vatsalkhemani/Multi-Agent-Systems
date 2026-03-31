@@ -12,7 +12,7 @@ import threading
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
-from agents import Agent, Runner, Handoff
+from agents import Agent, Runner
 
 from config import MODEL, MAX_TURNS
 
@@ -72,14 +72,14 @@ init_state()
 # ── Build agents fresh each run (to avoid stale refs) ────────
 def build_agents():
     """Build all agents with proper wiring."""
-    from agents.researcher import user_pain_researcher
-    from agents.trend_scout import trend_scout
-    from agents.competitive import competitive_intel
-    from agents.synthesizer import synthesizer
-    from agents.strategist import strategy_architect
-    from agents.gtm import gtm_strategist
-    from agents.compiler import blueprint_compiler
-    from agents.critic import critic
+    from forge_agents.researcher import user_pain_researcher
+    from forge_agents.trend_scout import trend_scout
+    from forge_agents.competitive import competitive_intel
+    from forge_agents.synthesizer import synthesizer
+    from forge_agents.strategist import strategy_architect
+    from forge_agents.gtm import gtm_strategist
+    from forge_agents.compiler import blueprint_compiler
+    from forge_agents.critic import critic
 
     # Research phase lead
     research_lead = Agent(
@@ -113,9 +113,9 @@ Think out loud about your decisions. Pass rich context to each agent.""",
                 tool_description="Synthesize all research into cross-referenced insights. Pass ALL research outputs.",
             ),
         ],
-        handoffs=[Handoff(agent=critic)],
+        handoffs=[critic],
     )
-    critic.handoffs = [Handoff(agent=research_lead)]
+    critic.handoffs = [research_lead]
 
     # Strategy phase lead
     strategy_lead = Agent(
@@ -141,7 +141,7 @@ Think out loud. Pass rich context.""",
                 tool_description="Build GTM plan. Pass strategy + research context.",
             ),
         ],
-        handoffs=[Handoff(agent=critic)],
+        handoffs=[critic],
     )
 
     # Compile phase lead

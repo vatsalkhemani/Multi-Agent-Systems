@@ -1,4 +1,4 @@
-from agents import Agent, Handoff
+from agents import Agent
 from config import MODEL
 
 from forge_agents.researcher import user_pain_researcher
@@ -94,8 +94,8 @@ The compiler's output is the final Product Strategy Blueprint.
             tool_description="Compile everything into a Product Strategy Blueprint. Pass ALL outputs as input.",
         ),
     ],
-    handoffs=[Handoff(agent=critic)],
+    handoffs=[critic],
 )
 
 # Wire bidirectional handoff: Critic can hand back to Discovery Lead
-critic.handoffs = [Handoff(agent=discovery_lead)]
+critic.handoffs = [discovery_lead]
