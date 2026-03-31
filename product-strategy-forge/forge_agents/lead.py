@@ -1,14 +1,14 @@
 from agents import Agent, Handoff
 from config import MODEL
 
-from agents.researcher import user_pain_researcher
-from agents.trend_scout import trend_scout
-from agents.competitive import competitive_intel
-from agents.synthesizer import synthesizer
-from agents.strategist import strategy_architect
-from agents.gtm import gtm_strategist
-from agents.compiler import blueprint_compiler
-from agents.critic import critic
+from forge_agents.researcher import user_pain_researcher
+from forge_agents.trend_scout import trend_scout
+from forge_agents.competitive import competitive_intel
+from forge_agents.synthesizer import synthesizer
+from forge_agents.strategist import strategy_architect
+from forge_agents.gtm import gtm_strategist
+from forge_agents.compiler import blueprint_compiler
+from forge_agents.critic import critic
 
 
 discovery_lead = Agent(
