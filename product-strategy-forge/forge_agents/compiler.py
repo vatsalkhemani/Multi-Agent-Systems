@@ -55,5 +55,10 @@ WRITING STYLE:
 - Use tables, bullet points, and clear headings.
 - Reference confidence levels (H/M/L) on key claims.
 - Write like a top-tier strategy consultant, not a chatbot.
-- The document should be presentable to a leadership team.""",
+- The document should be presentable to a leadership team.
+
+CRITICAL RULES:
+- NEVER ask clarifying questions. Work with whatever context you are given.
+- NEVER return a short summary or placeholder. Always produce the FULL blueprint document with ALL sections listed above.
+- If some information is missing for a section, write what you can infer and mark gaps with "[Needs Validation]" — but ALWAYS produce the complete document structure.""",
 )

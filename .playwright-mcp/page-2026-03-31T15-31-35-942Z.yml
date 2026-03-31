@@ -1,0 +1,109 @@
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - button "keyboard_double_arrow_left" [ref=e7] [cursor=pointer]:
+      - generic [ref=e9]: keyboard_double_arrow_left
+    - generic [ref=e12]:
+      - heading "Product Strategy Forge" [level=1] [ref=e16]
+      - paragraph [ref=e21]: 9 AI agents collaborating to build your product strategy
+      - separator [ref=e26]
+      - generic [ref=e28]:
+        - paragraph [ref=e32]: Problem Statement
+        - textbox "Problem Statement" [ref=e35]:
+          - /placeholder: Describe the problem you want to build a product strategy for...
+      - button "Start Forge" [disabled] [ref=e38]:
+        - paragraph [ref=e42]: Start Forge
+      - separator [ref=e47]
+      - heading "Pipeline" [level=3] [ref=e51]
+      - paragraph [ref=e56]: "[ ] Research & Critique"
+      - paragraph [ref=e61]: "[ ] Strategy & Critique"
+      - paragraph [ref=e66]: "[ ] Blueprint"
+      - separator [ref=e71]
+      - heading "Agent Roster" [level=3] [ref=e75]
+      - generic [ref=e80]:
+        - generic [ref=e82]: 🧠 Discovery Lead
+        - generic [ref=e83]: waiting
+      - generic [ref=e88]:
+        - generic [ref=e90]: 🔍 User Pain Researcher
+        - generic [ref=e91]: waiting
+      - generic [ref=e96]:
+        - generic [ref=e98]: 📈 Trend Scout
+        - generic [ref=e99]: waiting
+      - generic [ref=e104]:
+        - generic [ref=e106]: ⚔ Competitive Intelligence
+        - generic [ref=e107]: waiting
+      - generic [ref=e112]:
+        - generic [ref=e114]: 🔗 Research Synthesizer
+        - generic [ref=e115]: waiting
+      - generic [ref=e120]:
+        - generic [ref=e122]: ⚠ Critic
+        - generic [ref=e123]: waiting
+      - generic [ref=e128]:
+        - generic [ref=e130]: ♟ Strategy Architect
+        - generic [ref=e131]: waiting
+      - generic [ref=e136]:
+        - generic [ref=e138]: 🚀 GTM Strategist
+        - generic [ref=e139]: waiting
+      - generic [ref=e144]:
+        - generic [ref=e146]: 📄 Blueprint Compiler
+        - generic [ref=e147]: waiting
+      - separator [ref=e152]
+      - paragraph [ref=e157]: Built with OpenAI Agents SDK + Azure OpenAI
+  - generic [ref=e160]:
+    - banner [ref=e161]:
+      - generic [ref=e164]:
+        - generic [ref=e166]:
+          - img "Running..." [ref=e167]:
+            - img [ref=e168]
+          - button "Stop" [ref=e172] [cursor=pointer]
+        - button "Deploy" [ref=e174] [cursor=pointer]:
+          - generic [ref=e176]: Deploy
+        - button "Main menu" [ref=e178] [cursor=pointer]:
+          - img [ref=e179]
+    - generic [ref=e186]:
+      - generic [ref=e188]:
+        - heading "Agent Activity Log" [level=3] [ref=e193]:
+          - text: Agent Activity Log
+          - generic [ref=e194]:
+            - link "Link to heading":
+              - /url: "#agent-activity-log"
+              - img
+        - paragraph [ref=e199]: No activity yet. Start the forge to see agents in action.
+      - generic [ref=e201]:
+        - heading "Welcome to the Product Strategy Forge" [level=3] [ref=e206]:
+          - text: Welcome to the Product Strategy Forge
+          - generic [ref=e207]:
+            - link "Link to heading":
+              - /url: "#welcome-to-the-product-strategy-forge"
+              - img
+        - paragraph [ref=e212]: 9 AI agents collaborate to turn your problem statement into a Product Strategy Blueprint.
+        - heading "Agent Orchestration Flow" [level=4] [ref=e218]:
+          - text: Agent Orchestration Flow
+          - generic [ref=e219]:
+            - link "Link to heading":
+              - /url: "#agent-orchestration-flow"
+              - img
+        - generic [ref=e224]:
+          - generic [ref=e225]: "PHASE 1: RESEARCH"
+          - generic [ref=e227]: 🧠 Discovery Lead
+          - generic [ref=e228]: ↓ parallel calls ↓
+          - generic [ref=e229]:
+            - generic [ref=e230]: 🔍 Pain Researcher
+            - generic [ref=e231]: 📈 Trend Scout
+            - generic [ref=e232]: ⚔ Competitive Intel
+          - generic [ref=e233]: ↓ all results ↓
+          - generic [ref=e235]: 🔗 Research Synthesizer
+          - generic [ref=e236]: ↓ handoff ↓
+          - generic [ref=e238]: ⚠ Critic (approve or redo)
+          - generic [ref=e241]: 👤 You review & approve
+          - generic [ref=e243]: "PHASE 2: STRATEGY"
+          - generic [ref=e244]:
+            - generic [ref=e245]: ♟ Strategy Architect
+            - generic [ref=e246]: 🚀 GTM Strategist
+          - generic [ref=e247]: ↓ handoff ↓
+          - generic [ref=e249]: ⚠ Critic (approve or redo)
+          - generic [ref=e252]: 👤 You review & approve
+          - generic [ref=e254]: "PHASE 3: COMPILE"
+          - generic [ref=e256]: 📄 Blueprint Compiler
+          - generic [ref=e257]: ↓
+          - generic [ref=e259]: 📋 Final Strategy Blueprint
+        - separator [ref=e264]
