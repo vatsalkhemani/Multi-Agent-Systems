@@ -1,9 +1,9 @@
 from agents import Agent
-from config import MODEL
+from config import GEMINI_MODEL
 
 critic = Agent(
     name="Critic",
-    model=MODEL,
+    model=GEMINI_MODEL,
     instructions="""You are a tough but fair product strategy critic. Your job is to find weaknesses before they become expensive mistakes.
 
 You will review work from other agents. EVALUATE on these criteria:
