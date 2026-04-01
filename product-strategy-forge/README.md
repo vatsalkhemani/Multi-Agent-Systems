@@ -11,7 +11,7 @@ Product Strategy Forge is an AI-powered strategy engine that replicates how a hi
 **What makes it different from a single ChatGPT prompt:**
 
 - **Specialization**: Each agent has a focused role and tailored instructions. A Trend Scout thinks differently than a Competitive Intelligence analyst.
-- **Critique loops**: A dedicated Critic agent evaluates the work and sends specific agents back to redo weak sections. This back-and-forth catches gaps that a single pass misses.
+- **Cross-model critique**: A dedicated Critic agent — powered by Google Gemini, a different LLM than the rest of the team — evaluates the work and sends specific agents back to redo weak sections. Using a separate model provider means the Critic doesn't share the same blind spots as the agents it's reviewing.
 - **Parallel research**: Three research agents run simultaneously, then a Synthesizer cross-references their findings to surface contradictions and reinforcing patterns.
 - **Human-in-the-loop**: You review and approve (with optional guidance) between each phase. The agents work for you, not instead of you.
 - **Structured output**: The final Blueprint Compiler produces a polished, presentation-ready strategy document with executive summary, research foundation, strategic direction, GTM plan, and risk analysis.
@@ -94,7 +94,7 @@ This back-and-forth produces stronger output than a single pass.
 | 3 | Trend Scout | Analyzes industry trends, timing windows, and answers "why now?" |
 | 4 | Competitive Intelligence | Maps competitors, assesses moats, identifies market gaps |
 | 5 | Research Synthesizer | Cross-references all research, surfaces contradictions, ranks insights |
-| 6 | **Critic** | Evaluates work quality. Approves or sends specific agents back with targeted feedback |
+| 6 | **Critic** *(Gemini)* | Evaluates work quality using a different LLM. Approves or sends specific agents back with targeted feedback |
 | 7 | Strategy Architect | Builds product vision, strategic bets, moat strategy, sequencing |
 | 8 | GTM Strategist | Builds go-to-market: beachhead segment, positioning, channels, pricing, launch phases |
 | 9 | Blueprint Compiler | Compiles all work into a polished Product Strategy Blueprint |
@@ -104,6 +104,7 @@ This back-and-forth produces stronger output than a single pass.
 | Pattern | Where |
 |---------|-------|
 | **Agent-as-Tool** | Discovery Lead calls 7 specialist agents as tools |
+| **Cross-Model Critique** | Critic runs on Gemini — a different LLM — so it doesn't share the same biases |
 | **Bidirectional Handoff** | Discovery Lead and Critic transfer control back and forth |
 | **Parallel Tool Calls** | Discovery Lead dispatches 3 research agents at once |
 | **RunHooks** | Streamlit UI uses hooks to stream agent activity to the sidebar in real-time |
@@ -143,6 +144,8 @@ cp .env.example .env
 | `AZURE_OPENAI_ENDPOINT` | Your Azure OpenAI endpoint URL |
 | `AZURE_OPENAI_DEPLOYMENT` | Deployment name (default: `gpt-4o`) |
 | `AZURE_OPENAI_API_VERSION` | API version (default: `2024-12-01-preview`) |
+| `GEMINI_API_KEY` | Google Gemini API key (powers the Critic agent) |
+| `GEMINI_MODEL` | Gemini model name (default: `gemini-3.1-flash-lite-preview`) |
 | `MAX_TURNS` | Maximum agent turns per phase (default: `40`) |
 
 ## Run
@@ -191,6 +194,6 @@ product-strategy-forge/
 ## Tech Stack
 
 - [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) for agent orchestration
-- Azure OpenAI (GPT-4o) powering all 9 agents
+- Azure OpenAI (GPT-4o) powering 8 agents + Google Gemini powering the Critic for cross-model evaluation
 - Streamlit for the human-in-the-loop UI with real-time agent activity tracking
 - Python 3.11+
