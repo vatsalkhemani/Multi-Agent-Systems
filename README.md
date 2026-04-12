@@ -1,6 +1,6 @@
 # Multi-Agent Systems
 
-A collection of multi-agent AI systems exploring different orchestration patterns — collaborative, adversarial, and critique-driven. Each project is a standalone system with its own agents, UI, and architecture.
+A collection of multi-agent AI systems exploring different orchestration patterns — collaborative, adversarial, and constructive. Each project is a standalone system with its own agents, UI, and architecture.
 
 ## Projects
 
@@ -9,6 +9,7 @@ A collection of multi-agent AI systems exploring different orchestration pattern
 | [Product Strategy Forge](product-strategy-forge/) | 9 | Collaborative + cross-provider critique | GPT-4o + Gemini Critic, OpenAI Agents SDK, Streamlit |
 | [Product Strategy Solo](product-strategy-solo/) | 8 | Collaborative, single-pass | GPT-4o, OpenAI Agents SDK, Streamlit |
 | [Debate Arena](debate-arena/) | 6 | Adversarial, multi-round debate | GPT-4o, OpenAI Agents SDK, Streamlit |
+| [Voyage Agents](voyage-agents/) | 7 | Constructive — research, plan, BUILD | GPT-4o + Gemini Reviewer, OpenAI Agents SDK, Streamlit |
 
 ### Product Strategy Forge
 
@@ -26,6 +27,12 @@ Same pipeline as the Forge, minus the Critic. Single-pass baseline — no redo l
 
 **Key patterns:** Adversarial agents, multi-round protocol, cross-examination, scored evaluation, emergent quality through conflict
 
+### Voyage Agents
+
+7 agents collaborate to turn a trip idea into a complete, interactive HTML travel guide website. Three researchers investigate the destination, curate experiences, and plan logistics in parallel. A Gemini-powered Reviewer quality-checks the plan. An Itinerary Architect and Budget Analyst build the detailed plan. A Website Builder assembles everything into a beautiful single-file HTML with Leaflet.js maps, venue cards, and budget breakdowns.
+
+**Key patterns:** Research → plan → review → BUILD pipeline, parallel research, cross-model review, artifact generation (HTML website), vibe-driven personalization
+
 ## Quick Start
 
 Each project is independent. Pick one and run:
@@ -42,6 +49,7 @@ Or run in terminal mode:
 python forge.py "your prompt"    # Product Strategy Forge
 python solo.py "your prompt"     # Product Strategy Solo
 python arena.py "your prompt"    # Debate Arena
+python voyage.py "your prompt"   # Voyage Agents
 ```
 
 ## Setup
@@ -53,7 +61,7 @@ AZURE_OPENAI_API_KEY=your-key
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
 AZURE_OPENAI_DEPLOYMENT=gpt-4o
 AZURE_OPENAI_API_VERSION=2024-12-01-preview
-GEMINI_API_KEY=your-gemini-key  # Only needed for Product Strategy Forge
+GEMINI_API_KEY=your-gemini-key  # Needed for Forge (Critic) and Voyage (Reviewer)
 ```
 
 ## Stack
