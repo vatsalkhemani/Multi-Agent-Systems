@@ -1,72 +1,72 @@
 # Multi-Agent Systems
 
-A collection of multi-agent AI systems exploring different orchestration patterns — collaborative, adversarial, and constructive. Each project is a standalone system with its own agents, UI, and architecture.
+A portfolio of multi-agent AI systems, each exploring a different orchestration pattern. Collaborative agents that help each other. Adversarial agents that argue with each other. Constructive agents that build something together.
+
+| Project | What It Does | Pattern | Agents |
+|---------|-------------|---------|--------|
+| [Product Strategy Forge](product-strategy-forge/) | Turns a problem statement into a Product Strategy Blueprint | Collaborative + cross-model critique | 9 |
+| [Debate Arena](debate-arena/) | Turns a decision question into a scored Decision Brief | Adversarial, multi-round debate | 6 |
+| [Voyage Agents](voyage-agents/) | Turns a trip idea into an interactive travel guide website | Research → plan → review → build | 7 |
+| [Product Strategy Solo](product-strategy-solo/) | Baseline comparison for the Forge (no critique) | Collaborative, single-pass | 8 |
 
 ## Projects
 
-| Project | Agents | Pattern | Tech |
-|---------|--------|---------|------|
-| [Product Strategy Forge](product-strategy-forge/) | 9 | Collaborative + cross-provider critique | GPT-4o + Gemini Critic, OpenAI Agents SDK, Streamlit |
-| [Product Strategy Solo](product-strategy-solo/) | 8 | Collaborative, single-pass | GPT-4o, OpenAI Agents SDK, Streamlit |
-| [Debate Arena](debate-arena/) | 6 | Adversarial, multi-round debate | GPT-4o, OpenAI Agents SDK, Streamlit |
-| [Voyage Agents](voyage-agents/) | 7 | Constructive — research, plan, BUILD | GPT-4o + Gemini Reviewer, OpenAI Agents SDK, Streamlit |
+### [Product Strategy Forge](product-strategy-forge/)
 
-### Product Strategy Forge
+9 agents collaborate to turn a problem statement into a Product Strategy Blueprint. Three researchers run in parallel, a Synthesizer cross-references their findings, and a Critic powered by a separate LLM challenges the work - sending agents back to redo weak sections. You approve between phases.
 
-9 agents collaborate to turn a problem statement into a Product Strategy Blueprint. Three researchers work in parallel, a synthesizer cross-references their findings, and a Gemini-powered Critic challenges GPT-4o's work — sending agents back to redo weak sections. Human approval gates between phases.
+![Product Strategy Forge](product-strategy-forge/screenshots/run3.png)
 
-**Key patterns:** Agent-as-tool, bidirectional handoffs, parallel execution, critique loops, cross-provider challenge (GPT-4o + Gemini)
+---
 
-### Product Strategy Solo
+### [Debate Arena](debate-arena/)
 
-Same pipeline as the Forge, minus the Critic. Single-pass baseline — no redo loops, no cross-provider challenge, no approval gates. Exists for direct comparison against the Forge to see what critique catches.
+6 agents engage in structured adversarial debate across 3 rounds. Advocate Alpha and Beta argue opposing positions, a Devil's Advocate attacks both, agents cross-examine each other's claims, then defend under fire. A Judge scores arguments on 5 criteria, and a Synthesizer compiles a Decision Brief.
 
-### Debate Arena
+---
 
-6 agents engage in structured adversarial debate across 3 rounds. A Moderator frames two opposing positions, Advocate Alpha and Beta argue their sides, and a Devil's Advocate attacks both. Agents cross-examine each other's specific claims, then defend under fire. A Judge scores all arguments, and a Synthesizer compiles a Decision Brief.
+### [Voyage Agents](voyage-agents/)
 
-**Key patterns:** Adversarial agents, multi-round protocol, cross-examination, scored evaluation, emergent quality through conflict
+7 agents research, plan, review, and build a complete interactive travel guide website. Destination research, venue curation with coordinates, logistics planning - all in parallel. A reviewer on a different LLM quality-checks. An itinerary architect and budget analyst build the plan. A website builder assembles everything into a shareable HTML file with maps and venue cards.
 
-### Voyage Agents
+<p>
+<img src="voyage-agents/screenshots/output1.png" width="48%" alt="Voyage Agents output - itinerary" />
+<img src="voyage-agents/screenshots/output2.png" width="48%" alt="Voyage Agents output - map and budget" />
+</p>
 
-7 agents collaborate to turn a trip idea into a complete, interactive HTML travel guide website. Three researchers investigate the destination, curate experiences, and plan logistics in parallel. A Gemini-powered Reviewer quality-checks the plan. An Itinerary Architect and Budget Analyst build the detailed plan. A Website Builder assembles everything into a beautiful single-file HTML with Leaflet.js maps, venue cards, and budget breakdowns.
+---
 
-**Key patterns:** Research → plan → review → BUILD pipeline, parallel research, cross-model review, artifact generation (HTML website), vibe-driven personalization
+### [Product Strategy Solo](product-strategy-solo/)
+
+Same pipeline as the Forge, minus the Critic. Single-pass baseline - no redo loops, no cross-model challenge. Exists for direct comparison to see what critique catches.
 
 ## Quick Start
 
-Each project is independent. Pick one and run:
+Each project is independent:
 
 ```bash
 cd <project-name>
 pip install -r requirements.txt
-streamlit run app.py          # Interactive UI
+streamlit run app.py          # Interactive UI with human-in-the-loop
 ```
 
-Or run in terminal mode:
+Or terminal mode:
 
 ```bash
 python forge.py "your prompt"    # Product Strategy Forge
-python solo.py "your prompt"     # Product Strategy Solo
 python arena.py "your prompt"    # Debate Arena
 python voyage.py "your prompt"   # Voyage Agents
+python solo.py "your prompt"     # Product Strategy Solo
 ```
 
 ## Setup
 
-All projects use Azure OpenAI. Create a `.env` in the repo root:
+Create a `.env` in each project directory:
 
 ```env
 AZURE_OPENAI_API_KEY=your-key
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
 AZURE_OPENAI_DEPLOYMENT=gpt-4o
 AZURE_OPENAI_API_VERSION=2024-12-01-preview
-GEMINI_API_KEY=your-gemini-key  # Needed for Forge (Critic) and Voyage (Reviewer)
+GEMINI_API_KEY=your-gemini-key  # Needed for Forge and Voyage
 ```
-
-## Stack
-
-- **Orchestration:** OpenAI Agents SDK
-- **LLMs:** Azure OpenAI (GPT-4o), Google Gemini (Critic in Forge)
-- **UI:** Streamlit with real-time agent activity streaming
-- **Concurrency:** Thread-safe shared state with daemon threads

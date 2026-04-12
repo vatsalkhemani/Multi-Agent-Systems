@@ -1,171 +1,150 @@
 # Debate Arena
 
-A multi-agent adversarial debate system that produces better decisions through structured argumentation. 6 AI agents with distinct roles engage in a 3-round debate protocol — arguing, attacking, defending, and judging — to transform any decision prompt into a comprehensive Decision Brief.
+A multi-agent adversarial debate system where 6 AI agents argue, attack, defend, and judge  - turning any decision into a comprehensive Decision Brief.
 
-## Why Multi-Agent Debate?
+## What This Is
 
-A single LLM asked "should we build or buy?" produces a balanced but shallow analysis. It can't genuinely argue both sides because it collapses to the middle.
+Ask a single LLM "should we build or buy?" and you get a balanced but shallow analysis. It hedges. It collapses to the middle. It can't genuinely argue both sides because it's one brain trying to hold two positions.
 
-Debate Arena solves this by assigning **adversarial objectives** to separate agents:
-- **Advocate Alpha** must WIN for Position A — no hedging allowed
-- **Advocate Beta** must WIN for Position B — equally aggressive
-- **Devil's Advocate** must DESTROY both — allergic to consensus
-- The **Judge** scores argument quality impartially
-- The **Synthesizer** distills the strongest insights from all sides
+Debate Arena fixes this by giving separate agents adversarial objectives. Advocate Alpha must WIN for Position A  - no hedging. Advocate Beta must WIN for Position B  - equally aggressive. A Devil's Advocate tries to DESTROY both. They cross-examine each other's specific claims, then defend under fire. A Judge scores argument quality impartially, and a Synthesizer distills the strongest insights into a Decision Brief.
 
-The result? **Round 3 arguments are qualitatively better than Round 1** because they've been stress-tested through cross-examination and forced rebuttals. This emergent quality improvement is impossible with single-pass analysis.
+The result: Round 3 arguments are qualitatively better than Round 1 because they've been stress-tested through cross-examination and forced rebuttals. This emergent quality improvement is impossible with single-pass analysis.
 
-## Architecture
+## How It Works
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                        DEBATE ARENA                              │
-├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  PHASE 1: OPENING ARGUMENTS                                     │
-│  ┌─────────────┐                                                │
-│  │  Moderator   │ ── Frames 2 opposing positions                │
-│  └──────┬──────┘                                                │
-│     ┌───┼────────────┐                                          │
-│     ▼   ▼            ▼                                          │
-│  ┌─────┐ ┌─────┐ ┌────────────┐                                │
-│  │Alpha│ │Beta │ │Devil's Adv.│  (All three argue)              │
-│  └─────┘ └─────┘ └────────────┘                                │
-│         │                                                        │
-│         ▼ HUMAN APPROVAL GATE                                    │
-│                                                                  │
-│  PHASE 2: CROSS-EXAMINATION & REBUTTALS                         │
-│  ┌─────────────┐                                                │
-│  │  Moderator   │                                               │
-│  └──────┬──────┘                                                │
-│         │  Round 2: Each agent attacks the others' arguments     │
-│     ┌───┼────────────┐                                          │
-│     ▼   ▼            ▼                                          │
-│  ┌─────┐ ┌─────┐ ┌────────────┐                                │
-│  │Alpha│ │Beta │ │Devil's Adv.│  (Cross-examine)                │
-│  └─────┘ └─────┘ └────────────┘                                │
-│         │                                                        │
-│         │  Round 3: Each agent defends against attacks           │
-│     ┌───┼────────────┐                                          │
-│     ▼   ▼            ▼                                          │
-│  ┌─────┐ ┌─────┐ ┌────────────┐                                │
-│  │Alpha│ │Beta │ │Devil's Adv.│  (Rebut & defend)               │
-│  └─────┘ └─────┘ └────────────┘                                │
-│         │                                                        │
-│         ▼ HUMAN APPROVAL GATE                                    │
-│                                                                  │
-│  PHASE 3: VERDICT & DECISION BRIEF                              │
-│  ┌─────────────┐                                                │
-│  │  Moderator   │                                               │
-│  └──────┬──────┘                                                │
-│     ┌───┴────┐                                                  │
-│     ▼        ▼                                                  │
-│  ┌──────┐ ┌────────────┐                                        │
-│  │Judge │ │Synthesizer │  Judge scores → Synthesizer compiles   │
-│  └──────┘ └────────────┘                                        │
-│         │                                                        │
-│         ▼                                                        │
-│  ┌──────────────────────┐                                       │
-│  │  DECISION BRIEF      │  Professional markdown document       │
-│  └──────────────────────┘                                       │
-└──────────────────────────────────────────────────────────────────┘
+  PHASE 1: OPENING ARGUMENTS
+  ┌─────────────┐
+  │  Moderator   │ ── Frames 2 opposing positions
+  └──────┬──────┘
+     ┌───┼────────────┐
+     ▼   ▼            ▼
+  ┌─────┐ ┌─────┐ ┌────────────┐
+  │Alpha│ │Beta │ │Devil's Adv.│  (All three argue)
+  └─────┘ └─────┘ └────────────┘
+         │
+         ▼ HUMAN APPROVAL GATE
+
+  PHASE 2: CROSS-EXAMINATION & REBUTTALS
+  ┌─────────────┐
+  │  Moderator   │
+  └──────┬──────┘
+         │  Round 2: Each agent attacks the others
+     ┌───┼────────────┐
+     ▼   ▼            ▼
+  ┌─────┐ ┌─────┐ ┌────────────┐
+  │Alpha│ │Beta │ │Devil's Adv.│  (Cross-examine)
+  └─────┘ └─────┘ └────────────┘
+         │
+         │  Round 3: Each agent defends against attacks
+     ┌───┼────────────┐
+     ▼   ▼            ▼
+  ┌─────┐ ┌─────┐ ┌────────────┐
+  │Alpha│ │Beta │ │Devil's Adv.│  (Rebut & defend)
+  └─────┘ └─────┘ └────────────┘
+         │
+         ▼ HUMAN APPROVAL GATE
+
+  PHASE 3: VERDICT
+  ┌──────┐ ┌────────────┐
+  │Judge │ │Synthesizer │  Judge scores → Synthesizer compiles
+  └──────┘ └────────────┘
+         │
+         ▼
+  ┌──────────────────────┐
+  │   DECISION BRIEF     │
+  └──────────────────────┘
 ```
+
+### The 3 Phases (with Human Approval)
+
+| Phase | What Happens | You Decide |
+|-------|-------------|------------|
+| **1. Opening Arguments** | Moderator frames 2 opposing positions, all 3 debaters argue | Review positions, add guidance |
+| **2. Cross-Exam & Rebuttals** | Each agent attacks the others' arguments, then defends under fire | Review debate, steer direction |
+| **3. Verdict** | Judge scores on 5 criteria, Synthesizer compiles Decision Brief | Download the final `.md` file |
 
 ## The 6 Agents
 
-| Agent | Role | Objective |
-|-------|------|-----------|
-| **Moderator** | Orchestrator | Frames positions, enforces debate protocol, passes context between agents |
-| **Advocate Alpha** | Position A debater | WIN for Position A. Preempt objections, attack opponents, defend under fire |
-| **Advocate Beta** | Position B debater | WIN for Position B. Same adversarial drive as Alpha, opposite conclusion |
-| **Devil's Advocate** | Contrarian | DESTROY both positions. Find fatal flaws, hidden assumptions, Option C |
-| **Judge** | Impartial scorer | Score all arguments on 5 criteria (Evidence, Logic, Feasibility, Risk, Persuasion) |
-| **Synthesizer** | Brief compiler | Compile everything into a professional Decision Brief with recommendation |
+| # | Agent | Objective |
+|---|-------|-----------|
+| 1 | **Moderator** | Frames positions, enforces protocol, passes context between agents |
+| 2 | **Advocate Alpha** | WIN for Position A. Preempt objections, attack opponents, defend under fire |
+| 3 | **Advocate Beta** | WIN for Position B. Same adversarial drive, opposite conclusion |
+| 4 | **Devil's Advocate** | DESTROY both positions. Find fatal flaws, hidden assumptions, Option C |
+| 5 | **Judge** | Score all arguments on 5 criteria: Evidence, Logic, Feasibility, Risk, Persuasion |
+| 6 | **Synthesizer** | Compile everything into a professional Decision Brief with recommendation |
 
-## What's New vs. Product Strategy Forge
+## The Output
 
-| Pattern | Product Strategy Forge | Debate Arena |
-|---------|----------------------|--------------|
-| Agent relationship | Collaborative | **Adversarial** |
-| Quality mechanism | Critic sends back | **Cross-examination + rebuttals** |
-| Interaction | Hub-and-spoke (Lead → agents) | **Agent vs. agent** (Alpha attacks Beta's arguments) |
-| Rounds | Single pass + redo | **Multi-round with escalation** |
-| Evaluation | Pass/fail critique | **Scored scorecard with 5 criteria** |
+A professional Decision Brief with:
+- Executive Summary  - VP-level decision recommendation
+- Positions Debated  - both sides with scores
+- Debate Dynamics  - how arguments evolved through cross-examination
+- Recommendation  - evidence-based path forward with conditions
+- Risk Register  - all risks from all debaters, ranked
+- Scorecard  - full argument quality scores (5 criteria, 1-10 each)
+- Deliberation Log  - how the adversarial process improved the output
+
+## What's Different vs. Product Strategy Forge
+
+| | Forge (collaborative) | Arena (adversarial) |
+|---|---|---|
+| Agent relationship | Agents help each other | **Agents attack each other** |
+| Quality mechanism | Critic sends back for redo | **Cross-examination + rebuttals** |
+| Interaction | Hub-and-spoke | **Agent vs. agent** |
+| Evaluation | Pass/fail critique | **Scored scorecard (5 criteria)** |
 | Output improvement | Better after critique | **Provably better each round** |
 
 ## Setup
-
-### Prerequisites
-- Python 3.11+
-- Azure OpenAI resource with GPT-4o deployment
-
-### Installation
 
 ```bash
 cd debate-arena
 pip install -r requirements.txt
 ```
 
-### Configuration
+Create a `.env` file:
 
-Create a `.env` file in the project root (or parent directory):
+| Variable | Description |
+|----------|-------------|
+| `AZURE_OPENAI_API_KEY` | Your Azure OpenAI API key |
+| `AZURE_OPENAI_ENDPOINT` | Your Azure OpenAI endpoint URL |
+| `AZURE_OPENAI_DEPLOYMENT` | Deployment name (default: `gpt-4o`) |
+| `AZURE_OPENAI_API_VERSION` | API version (default: `2024-12-01-preview`) |
 
-```env
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT=gpt-4o
-AZURE_OPENAI_API_VERSION=2024-12-01-preview
-MAX_TURNS=50
-```
-
-## Usage
-
-### Streamlit UI (Interactive, Human-in-the-Loop)
+## Run
 
 ```bash
-streamlit run app.py
+streamlit run app.py                                          # Interactive UI
+python arena.py "Should we build or buy our ML platform?"     # Terminal mode
 ```
 
-Features:
-- Enter any decision prompt
-- Watch agents debate in real-time via activity log
-- Approve between phases with optional guidance
-- Download the final Decision Brief as markdown
+### Sample Decision Prompts
 
-### Terminal (Autonomous)
+> Should we build our own ML infrastructure in-house or buy an existing platform? We're a 200-person B2B SaaS company with 5 ML engineers.
 
-```bash
-python arena.py "Should we build or buy our ML platform?"
+> Should we expand internationally to Europe first or go deeper in the US market? We have $10M ARR and 500 customers.
+
+> Should we open-source our core SDK or keep it proprietary? We're a developer tools company with 2,000 paying users.
+
+## Project Structure
+
 ```
-
-Or run interactively:
-```bash
-python arena.py
+debate-arena/
+├── arena_agents/
+│   ├── moderator.py         # 3 phase-specific Moderators
+│   ├── debaters.py          # Advocate Alpha, Beta, Devil's Advocate
+│   ├── judge.py             # Judge (5-criteria scorecard)
+│   └── synthesizer.py       # Synthesizer (Decision Brief compiler)
+├── app.py                   # Streamlit UI
+├── arena.py                 # Terminal runner
+├── config.py                # Azure OpenAI config
+└── requirements.txt
 ```
-
-## Example Decision Prompts
-
-- "Should we build our own ML infrastructure in-house or buy an existing platform? We're a 200-person B2B SaaS company with 5 ML engineers."
-- "Should we expand internationally to Europe first or go deeper in the US market? We have $10M ARR and 500 customers."
-- "Should we open-source our core SDK or keep it proprietary? We're a developer tools company with 2,000 paying users."
-- "Should we hire a VP of Sales or promote our top AE? We're at $5M ARR and need to scale the sales org."
-
-## Output: Decision Brief
-
-The final output is a professional markdown document containing:
-
-1. **Executive Summary** — VP-level decision recommendation
-2. **Positions Debated** — Both sides with scores
-3. **Debate Dynamics** — How arguments evolved through cross-examination
-4. **Recommendation** — Evidence-based path forward with conditions
-5. **Risk Register** — All risks from all debaters, ranked
-6. **Open Questions** — What still needs validation
-7. **Scorecard** — Full argument quality scores
-8. **Deliberation Log** — How the adversarial process improved the output
 
 ## Tech Stack
 
-- **Orchestration**: OpenAI Agents SDK (agent-as-tool pattern)
-- **LLM**: Azure OpenAI GPT-4o
-- **UI**: Streamlit with real-time activity streaming
-- **Concurrency**: Thread-safe shared state with daemon threads
+- [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) for orchestration
+- Azure OpenAI (GPT-4o)
+- Streamlit for the human-in-the-loop UI
+- Python 3.11+

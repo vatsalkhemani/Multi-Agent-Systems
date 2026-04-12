@@ -1,165 +1,152 @@
 # Voyage Agents
 
-**7 AI agents that research, plan, review, and build an interactive travel guide website — from a single trip idea.**
+A multi-agent system where 7 AI agents collaborate to turn a trip idea into a complete, interactive travel guide website  - with maps, venue cards, day-by-day itinerary, and budget breakdowns. All in a single shareable HTML file.
 
-> Project 1 (Forge): Agents that think together. Project 2 (Arena): Agents that argue. **Project 3 (Voyage): Agents that BUILD.**
+## What This Is
 
-## What It Does
+Imagine typing "Bali, 5 days, 4 friends, $600 each, surf and chill vibes"  - and getting back a full website with your day-by-day itinerary, every cafe and beach club pinned on an interactive map, costs broken down per person, and a budget dashboard telling you where to splurge vs save. That's Voyage Agents.
 
-Give Voyage Agents a destination, group size, budget, and vibe. It deploys a research team, planners, a quality reviewer, and a web developer — then hands you a complete interactive HTML travel guide you can open in your browser and share with friends.
+Seven specialized AI agents research, curate, plan, review, and build  - each with a distinct role. A Destination Researcher thinks differently than an Experience Curator or a Budget Analyst. A Trip Reviewer powered by a different LLM (Gemini) catches blind spots the other agents miss. You approve between phases and can steer the plan with guidance. The output is a beautiful, mobile-first HTML file you open in your browser and share with your travel group.
 
-**Input:** "Bali, 5 days, 4 friends, $600/person, chill beach vibes with great food"
+### Screenshots
 
-**Output:** A beautiful, mobile-first HTML website with:
-- Interactive day-by-day itinerary (expandable cards)
-- Curated venue cards with ratings, costs, tags, and Google Maps links
-- Leaflet.js interactive map with color-coded markers
-- Budget breakdown dashboard
-- Logistics cheat sheet
+![Agents working in real-time](screenshots/app.png)
 
-## Architecture
+<p>
+<img src="screenshots/output1.png" width="48%" alt="Generated travel guide  - itinerary and venue cards" />
+<img src="screenshots/output2.png" width="48%" alt="Generated travel guide  - map and budget" />
+</p>
+
+## How It Works
 
 ```
-User Input (destination, dates, group, budget, vibe)
-                        │
-┌───────────── PHASE 1: RESEARCH (parallel) ──────────────┐
-│                                                          │
-│  🌍 Destination      ⭐ Experience     🚗 Logistics     │
-│     Researcher          Curator           Planner        │
-│                                                          │
-│  Culture, weather,   Restaurants,      Flights,          │
-│  visa, safety,       cafes, bars,      transport,        │
-│  neighborhoods       activities,       accommodation,    │
-│                      beaches           money tips        │
-│                      (with coords!)                      │
-│                                                          │
-│               ↓ Trip Reviewer (Gemini) ↓                 │
-│          Quality check — approve or send back            │
-└────────────────────────┬─────────────────────────────────┘
-                         │
-┌───────────── PHASE 2: PLANNING (sequential) ────────────┐
-│                                                          │
-│  📅 Itinerary Architect                                 │
-│  Day-by-day, time-slotted plan with real venues          │
-│                         ↓                                │
-│  💰 Budget Analyst                                      │
-│  Per-person breakdown, splurge vs save, money tips       │
-└────────────────────────┬─────────────────────────────────┘
-                         │
-┌───────────── PHASE 3: BUILD ────────────────────────────┐
-│                                                          │
-│  🌐 Website Builder                                     │
-│  Assembles everything into a stunning single-file HTML   │
-│  with Leaflet maps, venue cards, budget dashboard        │
-└────────────────────────┬─────────────────────────────────┘
-                         │
-                    📄 Complete HTML file
-                    Open in browser. Share with friends.
+                     ┌────────────────┐
+                     │  Trip Director  │  Orchestrator
+                     └───────┬────────┘
+                             │
+       ┌─────────────────────┼─────────────────────┐
+       ▼                     ▼                     ▼
+┌──────────────┐   ┌────────────────┐   ┌──────────────────┐
+│ Destination  │   │  Experience    │   │    Logistics     │
+│ Researcher   │   │  Curator      │   │    Planner       │
+└──────┬───────┘   └───────┬────────┘   └────────┬─────────┘
+       └───────────────────┼─────────────────────┘
+                           ▼
+               ┌────────────────────────┐
+               │   Trip Reviewer        │◄─── Can send agents back
+               │   (Gemini)            │     with specific feedback
+               └───────────┬────────────┘
+                           ▼
+       ┌───────────────────┴───────────────────┐
+       ▼                                       ▼
+┌──────────────────┐              ┌──────────────────┐
+│    Itinerary     │              │     Budget       │
+│    Architect     │              │     Analyst      │
+└────────┬─────────┘              └────────┬─────────┘
+         └──────────────┬──────────────────┘
+                        ▼
+            ┌────────────────────────┐
+            │    Website Builder     │  → Interactive HTML
+            └────────────────────────┘
 ```
+
+### The 3 Phases (with Human Approval)
+
+| Phase | What Happens | You Decide |
+|-------|-------------|------------|
+| **1. Research & Review** | 3 researchers run in parallel, Gemini reviewer evaluates with up to 1 redo round | Review research, add guidance |
+| **2. Itinerary & Budget** | Day-by-day schedule using real venues, per-person cost breakdown with splurge/save tips | Review the plan, adjust |
+| **3. Build Website** | All data assembled into an interactive HTML travel guide | Preview in-app, download `.html` |
 
 ## The 7 Agents
 
-| Agent | Role | Model |
-|-------|------|-------|
-| **Trip Director** | Orchestrator — manages workflow, dispatches agents | GPT-4o |
-| **Destination Researcher** | Deep research — culture, weather, visa, neighborhoods | GPT-4o |
-| **Experience Curator** | Finds restaurants, bars, activities, beaches with coordinates & costs | GPT-4o |
-| **Logistics Planner** | Flights, transport, accommodation, money tips | GPT-4o |
-| **Itinerary Architect** | Builds realistic day-by-day, time-slotted plan | GPT-4o |
-| **Budget Analyst** | Per-person breakdown, splurge vs save, hidden costs | GPT-4o |
-| **Trip Reviewer** | Quality check — catches unrealistic timing, gaps, budget misalignment | Gemini |
-| **Website Builder** | Assembles all data into interactive HTML travel guide | GPT-4o |
+| # | Agent | Role | Model |
+|---|-------|------|-------|
+| 1 | **Trip Director** | Orchestrator  - dispatches agents, responds to review feedback | GPT-4o |
+| 2 | Destination Researcher | Culture, weather, visa, safety, neighborhoods, local tips | GPT-4o |
+| 3 | Experience Curator | Restaurants, cafes, bars, beaches, activities  - with coordinates, costs, ratings | GPT-4o |
+| 4 | Logistics Planner | Flights, transport, accommodation zones, money tips | GPT-4o |
+| 5 | **Trip Reviewer** | Quality check  - catches unrealistic timing, missing meals, vibe mismatches | Gemini |
+| 6 | Itinerary Architect | Day-by-day plan with geographic clustering, energy management, meal planning | GPT-4o |
+| 7 | Budget Analyst | Per-person breakdown, splurge vs save, hidden costs | GPT-4o |
+| 8 | Website Builder | Converts structured data into JSON that powers the HTML template | GPT-4o |
 
-## What Makes It Genuinely Agentic
+## The Output
 
-- **Adaptive research** — Bali gets different coverage than rural Bhutan
-- **Interest-based curation** — "chill beach vibes" produces different venues than "adventure and adrenaline"
-- **Constraint satisfaction** — the Itinerary Architect solves geographic clustering, energy management, and meal timing
-- **Budget trade-offs** — the analyst suggests where to splurge vs save, not just sums
-- **Cross-model review** — Gemini evaluates GPT-4o's work, catches different blind spots
-- **Tangible output** — agents don't just deliberate, they BUILD a complete interactive website
+A self-contained HTML file you open in any browser:
 
-## Quick Start
+- **Collapsible day cards** with time-slotted itinerary
+- **Venue cards** with ratings, costs, tags, Google Maps + Search links
+- **Leaflet.js interactive map** with color-coded markers
+- **Budget dashboard** with category breakdown and money tips
+- **Mobile-first design** with bottom tab navigation  - share with your group
 
-### Prerequisites
-
-- Python 3.11+
-- Azure OpenAI API access (GPT-4o)
-- Google Gemini API key
-
-### Setup
+## Setup
 
 ```bash
 cd voyage-agents
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the project root (or use the shared one):
+Create a `.env` file:
 
-```env
-AZURE_OPENAI_API_KEY=your-key
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT=gpt-4o
-AZURE_OPENAI_API_VERSION=2024-12-01-preview
-GEMINI_API_KEY=your-gemini-key
-```
+| Variable | Description |
+|----------|-------------|
+| `AZURE_OPENAI_API_KEY` | Your Azure OpenAI API key |
+| `AZURE_OPENAI_ENDPOINT` | Your Azure OpenAI endpoint URL |
+| `AZURE_OPENAI_DEPLOYMENT` | Deployment name (default: `gpt-4o`) |
+| `AZURE_OPENAI_API_VERSION` | API version (default: `2024-12-01-preview`) |
+| `GEMINI_API_KEY` | Google Gemini API key (powers the Trip Reviewer) |
 
-### Run (Terminal — autonomous)
-
-```bash
-python voyage.py "Bali, 5 days, 4 friends, $600/person, chill beach vibes"
-```
-
-Output saved to `output_travel_guide.html` — open in your browser.
-
-### Run (Streamlit — interactive with human-in-the-loop)
+## Run
 
 ```bash
-streamlit run app.py
+streamlit run app.py                    # Interactive UI with approval gates
+python voyage.py "your trip details"    # Autonomous terminal mode
 ```
 
-Fill in your trip details, describe your vibe, and watch 7 agents collaborate in real time. Approve between phases. Download your travel guide.
+### Sample Inputs
 
-## Key Architectural Patterns
+> **Destination:** Bali | **Duration:** 5 days | **Group:** 4 friends | **Budget:** $600/person
+> **Vibe:** Surf mornings in Canggu, explore Ubud, party in Seminyak. Great food and hidden cafes.
 
-| Pattern | How It's Used |
-|---------|---------------|
-| **Agent-as-Tool** | Director calls specialists as tools for structured dispatch |
-| **Parallel Execution** | 3 research agents run simultaneously in Phase 1 |
-| **Bidirectional Handoff** | Director ↔ Reviewer for quality gate with redo loop |
-| **Cross-Model Critique** | Gemini reviews GPT-4o's work for genuine second opinion |
-| **Artifact Generation** | Agents produce a tangible, shareable HTML website |
-| **Human-in-the-Loop** | Approval gates between phases with optional guidance |
+> **Destination:** Sri Lanka | **Duration:** 5 days | **Group:** 6 friends | **Budget:** $800/person
+> **Vibe:** Chill beach mornings with surfing, sunset cocktails at beach clubs, a couple of wild nights out. Weligama and Mirissa.
 
 ## Project Structure
 
 ```
 voyage-agents/
-├── app.py                    # Streamlit UI (interactive mode)
-├── voyage.py                 # Terminal runner (autonomous mode)
-├── config.py                 # Azure OpenAI + Gemini client setup
-├── requirements.txt
-├── README.md
-└── voyage_agents/
-    ├── __init__.py
-    ├── director.py           # Trip Director (orchestrator)
-    ├── researcher.py         # Destination Researcher
-    ├── curator.py            # Experience Curator
-    ├── logistics.py          # Logistics Planner
-    ├── itinerary.py          # Itinerary Architect
-    ├── budget.py             # Budget Analyst
-    ├── reviewer.py           # Trip Reviewer (Gemini)
-    └── builder.py            # Website Builder
+├── voyage_agents/
+│   ├── director.py          # Trip Director (6 tools + Reviewer handoff)
+│   ├── researcher.py        # Destination Researcher
+│   ├── curator.py           # Experience Curator
+│   ├── logistics.py         # Logistics Planner
+│   ├── itinerary.py         # Itinerary Architect
+│   ├── budget.py            # Budget Analyst
+│   ├── reviewer.py          # Trip Reviewer (Gemini)
+│   ├── builder.py           # Website Builder (JSON output)
+│   └── template.py          # HTML template with Leaflet maps
+├── app.py                   # Streamlit UI
+├── voyage.py                # Terminal runner
+├── config.py                # Azure OpenAI + Gemini config
+└── requirements.txt
 ```
+
+## SDK Patterns Used
+
+| Pattern | Where |
+|---------|-------|
+| **Agent-as-Tool** | Director calls 6 specialists as tools |
+| **Cross-Model Review** | Reviewer runs on Gemini  - different LLM, different blind spots |
+| **Bidirectional Handoff** | Director ↔ Reviewer transfer control back and forth |
+| **Parallel Execution** | 3 research agents run simultaneously |
+| **Data-Driven Template** | Builder outputs JSON, template renders the interactive website |
 
 ## Tech Stack
 
-- **Orchestration**: OpenAI Agents SDK
-- **Primary LLM**: Azure OpenAI GPT-4o
-- **Cross-Model Review**: Google Gemini
-- **UI**: Streamlit with real-time activity streaming
-- **Output**: Self-contained HTML with Leaflet.js maps
-
----
-
-*Part of the [Multi-Agent Systems](../) portfolio — showcasing collaborative, adversarial, and constructive multi-agent patterns.*
+- [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) for orchestration
+- Azure OpenAI (GPT-4o) + Google Gemini for cross-model review
+- Streamlit for the human-in-the-loop UI
+- Leaflet.js for interactive maps
+- Python 3.11+

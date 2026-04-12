@@ -15,7 +15,7 @@ Problem Statement
    ┌───┼───────────┐
    ▼   ▼           ▼
 ┌─────┐ ┌───────┐ ┌──────────────┐
-│User │ │Trend  │ │Competitive   │  (Research — parallel)
+│User │ │Trend  │ │Competitive   │  (Research  - parallel)
 │Pain │ │Scout  │ │Intelligence  │
 └──┬──┘ └──┬────┘ └──────┬───────┘
    └────────┼─────────────┘
@@ -54,7 +54,7 @@ Problem Statement
 
 ## Setup
 
-Same `.env` as the Forge — only needs Azure OpenAI keys (no Gemini).
+Same `.env` as the Forge  - only needs Azure OpenAI keys (no Gemini).
 
 ```bash
 cd product-strategy-solo
