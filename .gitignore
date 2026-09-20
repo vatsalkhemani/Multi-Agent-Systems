@@ -1,2 +1,5 @@
 .env
 .env.*
+
+# Playwright MCP debug output
+.playwright-mcp/
